@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python
 __pycache__/
 *.py[cod]
@@ -19,3 +20,12 @@ data.db
 Thumbs.db
 .vscode/
 .idea/
+=======
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+.streamlit/secrets.toml
+*.db
+>>>>>>> 3f5079905486acbe880da20999815a9eccf523b4
