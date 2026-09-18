@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoop - AI Industrial Circular Economy Platform</title>
+    <meta name="description" content="AI Industrial Waste Sourcing & Circular Economy Platform connecting waste generators with manufacturing buyers.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 3D WebGL / Constellation Motion Background Shader Canvas -->
+    <canvas id="reloop-dither-bg"></canvas>
+
+    <div class="app-container">
+
+        <!-- MAIN COGNIZANCE STICKY NAVBAR -->
+        <nav class="navbar">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-brand-logo">♻️</span>
+                <div class="nav-brand-title">Re<span>Loop</span></div>
+                <span class="portal-badge-indicator">Explainer Hub</span>
+            </a>
+
+            <ul class="nav-links">
+                <li class="nav-item active"><a href="index.html" style="color:inherit; text-decoration:none;">🌐 Explainer Hub</a></li>
+                <li class="nav-item"><a href="login.html?role=buyer" style="color:inherit; text-decoration:none;">🛒 Buyer Portal Login</a></li>
+                <li class="nav-item"><a href="login.html?role=supplier" style="color:inherit; text-decoration:none;">🏭 Supplier Portal Login</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="login.html?role=buyer" class="btn btn-buyer btn-sm">🛒 Buyer Portal</a>
+                <a href="login.html?role=supplier" class="btn btn-supplier btn-sm">🏭 Supplier Portal</a>
+            </div>
+        </nav>
+
+        <!-- MAIN EXPLAINER DASHBOARD CONTAINER -->
+        <section class="portal-container active">
+            <!-- Hero Explainer Banner -->
+            <div class="explainer-hero">
+                <h1 class="explainer-title">♻️ ReLoop</h1>
+                <div class="explainer-subtitle">AI-Powered Industrial Circular Economy Platform</div>
+                <p class="explainer-desc">
+                    ReLoop transforms industrial byproduct and factory waste management by directly connecting manufacturing buyers with verified waste suppliers through multi-factor AI matching, price intelligence, and real-time carbon offset accounting.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <a href="login.html?role=buyer" class="btn btn-buyer" style="font-size: 16px; padding: 14px 32px;">🛒 Enter Buyer Portal</a>
+                    <a href="login.html?role=supplier" class="btn btn-supplier" style="font-size: 16px; padding: 14px 32px;">🏭 Enter Supplier Portal</a>
+                </div>
+            </div>
+
+            <!-- Platform Architecture & Step-by-Step Workflow -->
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h2 style="font-family: var(--font-heading); color: var(--primary-mint);">⚙️ How ReLoop Works</h2>
+                <p style="color: var(--text-muted); font-size: 15px;">Automated 5-step circular manufacturing sourcing process</p>
+            </div>
+
+            <div class="process-steps-grid" style="margin-bottom: 50px;">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">Supplier Vetting</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Suppliers verify company GSTIN & factory compliance records.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">Waste Lot Posting</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Factories list waste lots using 🪄 AI Smart Description Generators.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">AI Matching</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Multi-factor AI matches distance, budget, trust scores & quality.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">Price Intelligence</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Listing prices compare live against market index benchmark rates.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">Direct Sourcing</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Buyers procure material and track real-time CO₂ diverted.</p>
+                </div>
+            </div>
+
+            <!-- Impact Statistics Grid -->
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h2 style="font-family: var(--font-heading); color: var(--text-main);">📈 Live Platform Metrics</h2>
+            </div>
+            <div class="grid-4" style="margin-bottom: 50px;">
+                <div class="metric-card">
+                    <div class="metric-label">Verified Suppliers</div>
+                    <div class="metric-val">128+</div>
+                    <div class="metric-sub">▲ 12 this month</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Waste Lots</div>
+                    <div class="metric-val">842</div>
+                    <div class="metric-sub">▲ 54 this week</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">CO₂ Diverted</div>
+                    <div class="metric-val">48.6 t</div>
+                    <div class="metric-sub">▲ 4.8 tons saved</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Transactions Completed</div>
+                    <div class="metric-val">389</div>
+                    <div class="metric-sub">▲ 21 deals closed</div>
+                </div>
+            </div>
+
+            <!-- Separate Portal Gateway Cards -->
+            <div class="portal-gateways-grid">
+                <div class="gateway-card">
+                    <div class="gateway-icon">🛒</div>
+                    <h2 style="color: var(--primary-mint); margin-bottom: 10px;">BUYER PORTAL</h2>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">
+                        Strictly for manufacturing buyers: Search Marketplace, calculate Carbon Offset, run AI Sourcing Matcher & manage orders.
+                    </p>
+                    <a href="login.html?role=buyer" class="btn btn-buyer btn-full" style="font-size: 16px; padding: 14px;">🚀 Buyer Login & Enter Portal</a>
+                </div>
+                <div class="gateway-card">
+                    <div class="gateway-icon">🏭</div>
+                    <h2 style="color: var(--primary-mint); margin-bottom: 10px;">SUPPLIER PORTAL</h2>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">
+                        Strictly for waste suppliers: List factory scrap using AI Autofill, track sales earnings, verify GSTIN & view buyer demand.
+                    </p>
+                    <a href="login.html?role=supplier" class="btn btn-supplier btn-full" style="font-size: 16px; padding: 14px;">🚀 Supplier Login & Enter Portal</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            ♻️ <b style="color: var(--primary-mint);">ReLoop</b> | Circular Industry Platform &bull; Powered by AI
+        </footer>
+
+    </div>
+
+    <!-- WebGL / Constellation Background Engine Script -->
+    <script src="background.js"></script>
+    <!-- Dynamic Motion & Animation Engine -->
+    <script src="motion.js"></script>
+</body>
+</html>

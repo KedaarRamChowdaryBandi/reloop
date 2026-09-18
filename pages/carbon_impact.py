@@ -36,41 +36,41 @@ homes_equivalent = total_co2 * 0.12
 
 with col1:
     st.markdown(f"""
-    <div class="reloop-card" style="text-align: center; border-color: #059669; height: 180px;">
+    <div class="reloop-card" style="text-align: center; border-color: #10B981; height: 180px;">
         <div style="font-size: 30px; margin-bottom: 5px;">🌲</div>
-        <h4 style="color:#64748B; font-size:13px; margin: 0;">Tree Seedlings</h4>
-        <h2 style="color:#059669 !important; -webkit-text-fill-color:#059669 !important; margin: 10px 0;">{trees_equivalent:,.1f}</h2>
-        <p style="color:#475569; font-size:11px; margin: 0;">Seedlings grown for 10 yrs</p>
+        <h4 style="color:#94A3B8; font-size:13px; margin: 0;">Tree Seedlings</h4>
+        <h2 style="color:#10B981 !important; -webkit-text-fill-color:#10B981 !important; margin: 10px 0;">{trees_equivalent:,.1f}</h2>
+        <p style="color:#CBD5E1; font-size:11px; margin: 0;">Seedlings grown for 10 yrs</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col2:
     st.markdown(f"""
-    <div class="reloop-card" style="text-align: center; border-color: #059669; height: 180px;">
+    <div class="reloop-card" style="text-align: center; border-color: #10B981; height: 180px;">
         <div style="font-size: 30px; margin-bottom: 5px;">🚗</div>
-        <h4 style="color:#64748B; font-size:13px; margin: 0;">Cars Off Road</h4>
-        <h2 style="color:#059669 !important; -webkit-text-fill-color:#059669 !important; margin: 10px 0;">{cars_equivalent:,.2f}</h2>
-        <p style="color:#475569; font-size:11px; margin: 0;">Passenger vehicles off road/yr</p>
+        <h4 style="color:#94A3B8; font-size:13px; margin: 0;">Cars Off Road</h4>
+        <h2 style="color:#10B981 !important; -webkit-text-fill-color:#10B981 !important; margin: 10px 0;">{cars_equivalent:,.2f}</h2>
+        <p style="color:#CBD5E1; font-size:11px; margin: 0;">Passenger vehicles off road/yr</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col3:
     st.markdown(f"""
-    <div class="reloop-card" style="text-align: center; border-color: #059669; height: 180px;">
+    <div class="reloop-card" style="text-align: center; border-color: #10B981; height: 180px;">
         <div style="font-size: 30px; margin-bottom: 5px;">📱</div>
-        <h4 style="color:#64748B; font-size:13px; margin: 0;">Phone Charges</h4>
-        <h2 style="color:#059669 !important; -webkit-text-fill-color:#059669 !important; margin: 10px 0;">{phones_equivalent:,.0f}</h2>
-        <p style="color:#475569; font-size:11px; margin: 0;">Smartphones charged avoided</p>
+        <h4 style="color:#94A3B8; font-size:13px; margin: 0;">Phone Charges</h4>
+        <h2 style="color:#10B981 !important; -webkit-text-fill-color:#10B981 !important; margin: 10px 0;">{phones_equivalent:,.0f}</h2>
+        <p style="color:#CBD5E1; font-size:11px; margin: 0;">Smartphones charged avoided</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col4:
     st.markdown(f"""
-    <div class="reloop-card" style="text-align: center; border-color: #059669; height: 180px;">
+    <div class="reloop-card" style="text-align: center; border-color: #10B981; height: 180px;">
         <div style="font-size: 30px; margin-bottom: 5px;">🏠</div>
-        <h4 style="color:#64748B; font-size:13px; margin: 0;">Home Power</h4>
-        <h2 style="color:#059669 !important; -webkit-text-fill-color:#059669 !important; margin: 10px 0;">{homes_equivalent:,.2f}</h2>
-        <p style="color:#475569; font-size:11px; margin: 0;">Homes electricity offset/yr</p>
+        <h4 style="color:#94A3B8; font-size:13px; margin: 0;">Home Power</h4>
+        <h2 style="color:#10B981 !important; -webkit-text-fill-color:#10B981 !important; margin: 10px 0;">{homes_equivalent:,.2f}</h2>
+        <p style="color:#CBD5E1; font-size:11px; margin: 0;">Homes electricity offset/yr</p>
     </div>
     """, unsafe_allow_html=True)
 

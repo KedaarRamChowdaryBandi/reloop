@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoop - AI Industrial Circular Economy Platform</title>
+    <meta name="description" content="AI Industrial Waste Sourcing & Circular Economy Platform connecting waste generators with manufacturing buyers.">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@300;400;600;700;800&display=swap');
+
+/* ==========================================
+   DESIGN TOKENS & CSS VARIABLES
+   ========================================== */
+
+:root {
+    --bg-dark: #040912;
+    --bg-card: rgba(10, 20, 36, 0.82);
+    --bg-card-hover: rgba(14, 28, 50, 0.92);
+    --border-color: rgba(0, 255, 192, 0.25);
+    --border-color-hover: rgba(0, 255, 192, 0.70);
+    
+    --primary-mint: #00FFC0;
+    --primary-emerald: #10B981;
+    --accent-cyan: #06B6D4;
+    --accent-lime: #34D399;
+    
+    --text-main: #F8FAFC;
+    --text-muted: #CBD5E1;
+    --text-dim: #94A3B8;
+    
+    --glass-blur: blur(18px);
+    --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.55);
+    --shadow-glow: 0 0 30px rgba(0, 255, 192, 0.40);
+    --font-heading: 'Sora', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+}
+
+/* ==========================================
+   GLOBAL RESET & LAYOUT
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-body);
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #040912;
+    color: var(--text-main);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Fixed 3D Animated Background Canvas */
+#reloop-dither-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    display: block;
+}
+
+/* Main Container Shell */
+.app-container {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+}
+
+/* ==========================================
+   MAIN NAVBAR (COGNIZANCE STICKY HEADER)
+   ========================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(4, 9, 18, 0.88);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--border-color);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.nav-brand-logo {
+    font-size: 28px;
+    filter: drop-shadow(0 0 12px var(--primary-mint));
+}
+
+.nav-brand-title {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.5px;
+}
+
+.nav-brand-title span {
+    color: var(--primary-mint);
+}
+
+.portal-badge-indicator {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(0, 255, 192, 0.15);
+    color: var(--primary-mint);
+    border: 1px solid var(--border-color);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: var(--primary-mint);
+    background: rgba(0, 255, 192, 0.12);
+}
+
+.nav-item.active {
+    border-bottom: 2px solid var(--primary-mint);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ==========================================
+   BUTTONS & INTERACTIVE CONTROLS
+   ========================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-mint) 0%, var(--primary-emerald) 100%);
+    color: #03140C;
+    box-shadow: 0 4px 20px rgba(0, 255, 192, 0.38);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0, 255, 192, 0.60);
+    background: linear-gradient(135deg, var(--accent-lime) 0%, var(--primary-mint) 100%);
+}
+
+.btn-buyer {
+    background: linear-gradient(135deg, #00FFC0 0%, #06B6D4 100%);
+    color: #03140C;
+    box-shadow: 0 4px 20px rgba(0, 255, 192, 0.35);
+}
+
+.btn-buyer:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(6, 182, 212, 0.55);
+}
+
+.btn-supplier {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: #FFFFFF;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+}
+
+.btn-supplier:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(16, 185, 129, 0.55);
+}
+
+.btn-outline {
+    background: rgba(10, 20, 36, 0.6);
+    color: var(--primary-mint);
+    border: 1px solid var(--border-color);
+}
+
+.btn-outline:hover {
+    background: rgba(0, 255, 192, 0.15);
+    border-color: var(--primary-mint);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: rgba(148, 163, 184, 0.15);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* ==========================================
+   PORTAL CONTAINER SECTIONS
+   ========================================== */
+
+.portal-container {
+    display: none;
+    padding: 30px 50px;
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.portal-container.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sub-Tab Navigation Bar */
+.subtab-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    overflow-x: auto;
+}
+
+.subtab-item {
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    background: rgba(10, 20, 36, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.subtab-item:hover, .subtab-item.active {
+    background: rgba(0, 255, 192, 0.15);
+    color: var(--primary-mint);
+    border-color: var(--primary-mint);
+}
+
+.subtab-content {
+    display: none;
+}
+
+.subtab-content.active {
+    display: block;
+    animation: fadeInUp 0.35s ease forwards;
+}
+
+/* ==========================================
+   EXPLAINER DASHBOARD HERO (COGNIZANCE STYLE)
+   ========================================== */
+
+.explainer-hero {
+    padding: 70px 50px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, rgba(0, 255, 192, 0.18) 0%, rgba(10, 20, 36, 0.92) 55%, rgba(6, 182, 212, 0.15) 100%);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: var(--glass-blur);
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.explainer-title {
+    font-family: var(--font-heading);
+    font-size: 60px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -1.5px;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 192, 0.45));
+}
+
+.explainer-subtitle {
+    font-family: var(--font-heading);
+    color: var(--primary-mint);
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.explainer-desc {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 780px;
+    margin: 0 auto 35px auto;
+    line-height: 1.7;
+}
+
+.portal-gateways-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.gateway-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 35px;
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.gateway-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-color-hover);
+    box-shadow: var(--shadow-glow);
+}
+
+.gateway-icon {
+    font-size: 54px;
+    margin-bottom: 16px;
+}
+
+/* Step-by-Step Architecture Diagram */
+.process-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-top: 25px;
+}
+
+.step-card {
+    background: rgba(10, 20, 36, 0.7);
+    border: 1px solid rgba(0, 255, 192, 0.2);
+    border-radius: 18px;
+    padding: 20px 16px;
+    text-align: center;
+    backdrop-filter: var(--glass-blur);
+}
+
+.step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary-mint);
+    color: #03140C;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px auto;
+}
+
+/* ==========================================
+   CARDS & METRIC GRID LAYOUTS
+   ========================================== */
+
+.reloop-card {
+    background: rgba(6, 15, 28, 0.58);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 24px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-bottom: 20px;
+}
+
+.reloop-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-color-hover);
+    box-shadow: var(--shadow-glow);
+    background: rgba(10, 24, 45, 0.72);
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+.metric-card {
+    background: rgba(6, 15, 28, 0.58);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.metric-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+}
+
+.metric-val {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary-mint);
+    filter: drop-shadow(0 0 10px rgba(0, 255, 192, 0.3));
+    margin-bottom: 4px;
+}
+
+.metric-sub {
+    font-size: 12px;
+    color: var(--accent-lime);
+    font-weight: 600;
+}
+
+/* ==========================================
+   FORMS & INPUTS
+   ========================================== */
+
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: rgba(4, 9, 18, 0.88);
+    color: var(--text-main);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.25s ease;
+}
+.form-control:focus {
+    border-color: var(--primary-mint);
+    box-shadow: 0 0 0 3px rgba(0, 255, 192, 0.2);
+}
+textarea.form-control { min-height: 100px; resize: vertical; }
+
+/* ==========================================
+   BADGES & CHIPS
+   ========================================== */
+
+.badge { display: inline-block; padding: 6px 14px; border-radius: 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.4px; }
+.badge-verified { background: rgba(0, 255, 192, 0.15); color: var(--primary-mint); border: 1px solid rgba(0, 255, 192, 0.4); }
+.badge-pending { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.4); }
+.badge-sold { background: rgba(244, 63, 94, 0.15); color: #FB7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+.badge-info { background: rgba(6, 182, 212, 0.15); color: #38BDF8; border: 1px solid rgba(6, 182, 212, 0.4); }
+
+/* ==========================================
+   MODAL WINDOWS & CHATBOT WIDGET
+   ========================================== */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: var(--glass-blur);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 550px;
+    padding: 32px;
+    box-shadow: var(--shadow-glow);
+    position: relative;
+}
+
+.modal-close { position: absolute; top: 20px; right: 24px; font-size: 24px; color: var(--text-dim); cursor: pointer; }
+.modal-close:hover { color: var(--primary-mint); }
+
+.chatbot-trigger {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-mint) 0%, var(--primary-emerald) 100%);
+    color: #03140C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 6px 25px rgba(0, 255, 192, 0.5);
+    z-index: 1500;
+    transition: all 0.3s ease;
+}
+.chatbot-trigger:hover { transform: scale(1.1); }
+
+.chatbot-drawer {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 380px;
+    height: 520px;
+    background: rgba(10, 20, 36, 0.95);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    backdrop-filter: var(--glass-blur);
+    z-index: 1500;
+    flex-direction: column;
+    overflow: hidden;
+}
+.chatbot-drawer.active { display: flex; }
+
+.chatbot-header { background: rgba(0, 255, 192, 0.12); padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
+.chatbot-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+.chat-msg { max-width: 80%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5; }
+.chat-msg.bot { background: rgba(15, 30, 54, 0.9); border: 1px solid var(--border-color); color: var(--text-main); align-self: flex-start; }
+.chat-msg.user { background: var(--primary-emerald); color: #FFFFFF; align-self: flex-end; }
+.chatbot-input-row { padding: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; gap: 8px; }
+
+.footer { text-align: center; padding: 30px; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.08); color: var(--text-dim); font-size: 14px; }
+
+@media (max-width: 1024px) {
+    .grid-4, .process-steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(1, 1fr); }
+    .portal-container { padding: 25px 20px; }
+    .portal-gateways-grid { grid-template-columns: repeat(1, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .navbar { padding: 14px 20px; flex-direction: column; gap: 12px; }
+    .grid-2, .grid-4 { grid-template-columns: 1fr; }
+    .explainer-title { font-size: 38px; }
+}
+
+/* ==========================================
+   🎬 DYNAMIC MOTION & ANIMATION SYSTEM
+   ========================================== */
+
+/* --- Scroll-Triggered Entrance Animations --- */
+.motion-fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.motion-fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.motion-fade-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.motion-fade-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.motion-fade-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.motion-fade-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.motion-scale-in {
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.motion-scale-in.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Staggered delay utility classes */
+.delay-1 { transition-delay: 0.1s !important; }
+.delay-2 { transition-delay: 0.2s !important; }
+.delay-3 { transition-delay: 0.3s !important; }
+.delay-4 { transition-delay: 0.4s !important; }
+.delay-5 { transition-delay: 0.5s !important; }
+.delay-6 { transition-delay: 0.6s !important; }
+
+/* --- Hero Typing Cursor Effect --- */
+.typing-cursor::after {
+    content: '|';
+    animation: blink-cursor 0.8s step-end infinite;
+    color: var(--primary-mint);
+    font-weight: 300;
+    margin-left: 2px;
+}
+
+@keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* --- Hero Title Glow Pulse --- */
+@keyframes hero-glow-pulse {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 255, 192, 0.45)); }
+    50% { filter: drop-shadow(0 0 40px rgba(0, 255, 192, 0.80)) drop-shadow(0 0 80px rgba(0, 255, 192, 0.30)); }
+}
+
+.explainer-title {
+    animation: hero-glow-pulse 3s ease-in-out infinite;
+}
+
+/* --- Floating Particles in Hero --- */
+@keyframes float-particle {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+    25% { transform: translateY(-20px) rotate(90deg); opacity: 1; }
+    50% { transform: translateY(-10px) rotate(180deg); opacity: 0.8; }
+    75% { transform: translateY(-25px) rotate(270deg); opacity: 0.5; }
+}
+
+.hero-float-particle {
+    position: absolute;
+    font-size: 24px;
+    animation: float-particle 4s ease-in-out infinite;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+/* --- Navbar Slide-Down Entrance --- */
+@keyframes navbar-slide-down {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.navbar {
+    animation: navbar-slide-down 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- Metric Card Glow Pulse on Hover --- */
+.metric-card {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.metric-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    border-color: var(--primary-mint);
+    box-shadow: 0 0 30px rgba(0, 255, 192, 0.3), 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.metric-val {
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover .metric-val {
+    text-shadow: 0 0 20px rgba(0, 255, 192, 0.8);
+    transform: scale(1.08);
+}
+
+/* --- Step Card Hover Pulse Ring --- */
+.step-card {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.step-card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(0, 255, 192, 0.15), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+    z-index: 0;
+}
+
+.step-card:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.step-card:hover {
+    transform: translateY(-8px) scale(1.04);
+    border-color: var(--primary-mint);
+    box-shadow: 0 0 25px rgba(0, 255, 192, 0.25);
+}
+
+.step-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Step Number Spin on Hover --- */
+.step-card:hover .step-number {
+    animation: step-spin 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes step-spin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+/* --- Gateway Card Magnetic Lift --- */
+.gateway-card {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+    perspective: 800px;
+}
+
+.gateway-card:hover {
+    transform: translateY(-10px) rotateX(3deg) rotateY(-2deg);
+    border-color: var(--border-color-hover);
+    box-shadow: var(--shadow-glow), 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.gateway-icon {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gateway-card:hover .gateway-icon {
+    transform: scale(1.15) translateY(-4px);
+    animation: icon-bounce 0.6s ease;
+}
+
+@keyframes icon-bounce {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.2) translateY(-8px); }
+    50% { transform: scale(1.1) translateY(-4px); }
+    70% { transform: scale(1.15) translateY(-6px); }
+    100% { transform: scale(1.15) translateY(-4px); }
+}
+
+/* --- Button Ripple Effect --- */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(0);
+    animation: ripple-expand 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple-expand {
+    to { transform: scale(4); opacity: 0; }
+}
+
+/* --- Button Glow Bounce on Hover --- */
+.btn-buyer:hover, .btn-supplier:hover, .btn-primary:hover {
+    animation: btn-glow-bounce 0.4s ease;
+}
+
+@keyframes btn-glow-bounce {
+    0% { box-shadow: 0 4px 20px rgba(0, 255, 192, 0.35); }
+    40% { box-shadow: 0 8px 40px rgba(0, 255, 192, 0.7); }
+    100% { box-shadow: 0 8px 30px rgba(0, 255, 192, 0.55); }
+}
+
+/* --- Reloop Card Hover Lift + Glow --- */
+.reloop-card {
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reloop-card:hover {
+    transform: translateY(-5px) scale(1.01);
+    border-color: var(--border-color-hover);
+    box-shadow: var(--shadow-glow);
+}
+
+/* --- Badge Pulse Animation --- */
+.badge-verified {
+    animation: badge-pulse-verified 2.5s ease-in-out infinite;
+}
+
+@keyframes badge-pulse-verified {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 192, 0.4); }
+    50% { box-shadow: 0 0 12px 4px rgba(0, 255, 192, 0.15); }
+}
+
+/* --- Shimmer Loading Effect --- */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.shimmer {
+    background: linear-gradient(90deg, transparent 25%, rgba(0, 255, 192, 0.08) 50%, transparent 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* --- Portal Badge Glow Breathe --- */
+.portal-badge-indicator {
+    animation: badge-breathe 3s ease-in-out infinite;
+}
+
+@keyframes badge-breathe {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 192, 0); }
+    50% { box-shadow: 0 0 10px 2px rgba(0, 255, 192, 0.2); }
+}
+
+/* --- Explainer Hero Entrance --- */
+.explainer-hero {
+    animation: hero-entrance 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes hero-entrance {
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* --- Chatbot Trigger Breathing Ring --- */
+.chatbot-trigger {
+    animation: chatbot-breathe 2s ease-in-out infinite;
+}
+
+@keyframes chatbot-breathe {
+    0%, 100% { box-shadow: 0 6px 25px rgba(0, 255, 192, 0.5); }
+    50% { box-shadow: 0 6px 35px rgba(0, 255, 192, 0.8), 0 0 50px rgba(0, 255, 192, 0.3); }
+}
+
+.chatbot-trigger:hover {
+    animation: chatbot-breathe 1s ease-in-out infinite, btn-glow-bounce 0.4s ease;
+}
+
+/* --- Floating Emoji Particles (Hero) --- */
+@keyframes float-up-fade {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+.floating-emoji {
+    position: fixed;
+    font-size: 20px;
+    animation: float-up-fade linear forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* --- Metric Number Count-Up Glow --- */
+.metric-val.counting {
+    animation: count-glow 0.1s ease-in-out;
+}
+
+@keyframes count-glow {
+    0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 192, 0.3); }
+    50% { text-shadow: 0 0 25px rgba(0, 255, 192, 0.8); }
+}
+
+/* --- Subtab Indicator Slide --- */
+.subtab-item {
+    position: relative;
+}
+
+.subtab-item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary-mint);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.subtab-item.active::after {
+    width: 60%;
+}
+
+.subtab-item:hover::after {
+    width: 40%;
+}
+
+/* --- Smooth Section Transitions --- */
+.portal-container.active {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- Form Control Focus Glow --- */
+.form-control:focus {
+    border-color: var(--primary-mint);
+    box-shadow: 0 0 0 3px rgba(0, 255, 192, 0.2), 0 0 20px rgba(0, 255, 192, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* --- Logo Spin on Brand Hover --- */
+.nav-brand-logo {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-brand:hover .nav-brand-logo {
+    transform: rotate(360deg) scale(1.1);
+}
+
+/* --- Footer Entrance --- */
+.footer {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.footer.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Nav Item Underline Slide --- */
+.nav-item::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary-mint);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(-50%);
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-item:hover::before {
+    width: 70%;
+}
+
+/* --- Card Grid Stagger Entrance --- */
+.grid-2 > *,
+.grid-3 > *,
+.grid-4 > * {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.grid-2.visible > *:nth-child(1),
+.grid-3.visible > *:nth-child(1),
+.grid-4.visible > *:nth-child(1) { transition-delay: 0s; opacity: 1; transform: translateY(0); }
+.grid-2.visible > *:nth-child(2),
+.grid-3.visible > *:nth-child(2),
+.grid-4.visible > *:nth-child(2) { transition-delay: 0.08s; opacity: 1; transform: translateY(0); }
+.grid-2.visible > *:nth-child(3),
+.grid-3.visible > *:nth-child(3),
+.grid-4.visible > *:nth-child(3) { transition-delay: 0.16s; opacity: 1; transform: translateY(0); }
+.grid-2.visible > *:nth-child(4),
+.grid-3.visible > *:nth-child(4),
+.grid-4.visible > *:nth-child(4) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
+.grid-2.visible > *:nth-child(5),
+.grid-3.visible > *:nth-child(5),
+.grid-4.visible > *:nth-child(5) { transition-delay: 0.32s; opacity: 1; transform: translateY(0); }
+
+/* --- Badge Info Pulse --- */
+.badge-info {
+    animation: badge-pulse-info 2.5s ease-in-out infinite;
+}
+
+@keyframes badge-pulse-info {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+    50% { box-shadow: 0 0 12px 4px rgba(56, 189, 248, 0.15); }
+}
+
+/* --- Smooth Scrollbar --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(4, 9, 18, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 192, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 192, 0.5);
+}
+
+/* --- Selection Color --- */
+::selection {
+    background: rgba(0, 255, 192, 0.3);
+    color: #FFFFFF;
+}</style>
+</head>
+<body>
+
+    <!-- 3D WebGL / Constellation Motion Background Shader Canvas -->
+    <canvas id="reloop-dither-bg"></canvas>
+
+    <div class="app-container">
+
+        <!-- MAIN COGNIZANCE STICKY NAVBAR -->
+        <nav class="navbar">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-brand-logo">♻️</span>
+                <div class="nav-brand-title">Re<span>Loop</span></div>
+                <span class="portal-badge-indicator">Explainer Hub</span>
+            </a>
+
+            <ul class="nav-links">
+                <li class="nav-item active"><a href="index.html" style="color:inherit; text-decoration:none;">🌐 Explainer Hub</a></li>
+                <li class="nav-item"><a href="login.html?role=buyer" style="color:inherit; text-decoration:none;">🛒 Buyer Portal Login</a></li>
+                <li class="nav-item"><a href="login.html?role=supplier" style="color:inherit; text-decoration:none;">🏭 Supplier Portal Login</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="login.html?role=buyer" class="btn btn-buyer btn-sm">🛒 Buyer Portal</a>
+                <a href="login.html?role=supplier" class="btn btn-supplier btn-sm">🏭 Supplier Portal</a>
+            </div>
+        </nav>
+
+        <!-- MAIN EXPLAINER DASHBOARD CONTAINER -->
+        <section class="portal-container active">
+            <!-- Hero Explainer Banner -->
+            <div class="explainer-hero">
+                <h1 class="explainer-title">♻️ ReLoop</h1>
+                <div class="explainer-subtitle">AI-Powered Industrial Circular Economy Platform</div>
+                <p class="explainer-desc">
+                    ReLoop transforms industrial byproduct and factory waste management by directly connecting manufacturing buyers with verified waste suppliers through multi-factor AI matching, price intelligence, and real-time carbon offset accounting.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <a href="login.html?role=buyer" class="btn btn-buyer" style="font-size: 16px; padding: 14px 32px;">🛒 Enter Buyer Portal</a>
+                    <a href="login.html?role=supplier" class="btn btn-supplier" style="font-size: 16px; padding: 14px 32px;">🏭 Enter Supplier Portal</a>
+                </div>
+            </div>
+
+            <!-- Platform Architecture & Step-by-Step Workflow -->
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h2 style="font-family: var(--font-heading); color: var(--primary-mint);">⚙️ How ReLoop Works</h2>
+                <p style="color: var(--text-muted); font-size: 15px;">Automated 5-step circular manufacturing sourcing process</p>
+            </div>
+
+            <div class="process-steps-grid" style="margin-bottom: 50px;">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">Supplier Vetting</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Suppliers verify company GSTIN & factory compliance records.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">Waste Lot Posting</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Factories list waste lots using 🪄 AI Smart Description Generators.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">AI Matching</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Multi-factor AI matches distance, budget, trust scores & quality.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">Price Intelligence</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Listing prices compare live against market index benchmark rates.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h4 style="color: var(--primary-mint); margin-bottom: 6px;">Direct Sourcing</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">Buyers procure material and track real-time CO₂ diverted.</p>
+                </div>
+            </div>
+
+            <!-- Impact Statistics Grid -->
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h2 style="font-family: var(--font-heading); color: var(--text-main);">📈 Live Platform Metrics</h2>
+            </div>
+            <div class="grid-4" style="margin-bottom: 50px;">
+                <div class="metric-card">
+                    <div class="metric-label">Verified Suppliers</div>
+                    <div class="metric-val">128+</div>
+                    <div class="metric-sub">▲ 12 this month</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Waste Lots</div>
+                    <div class="metric-val">842</div>
+                    <div class="metric-sub">▲ 54 this week</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">CO₂ Diverted</div>
+                    <div class="metric-val">48.6 t</div>
+                    <div class="metric-sub">▲ 4.8 tons saved</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Transactions Completed</div>
+                    <div class="metric-val">389</div>
+                    <div class="metric-sub">▲ 21 deals closed</div>
+                </div>
+            </div>
+
+            <!-- Separate Portal Gateway Cards -->
+            <div class="portal-gateways-grid">
+                <div class="gateway-card">
+                    <div class="gateway-icon">🛒</div>
+                    <h2 style="color: var(--primary-mint); margin-bottom: 10px;">BUYER PORTAL</h2>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">
+                        Strictly for manufacturing buyers: Search Marketplace, calculate Carbon Offset, run AI Sourcing Matcher & manage orders.
+                    </p>
+                    <a href="login.html?role=buyer" class="btn btn-buyer btn-full" style="font-size: 16px; padding: 14px;">🚀 Buyer Login & Enter Portal</a>
+                </div>
+                <div class="gateway-card">
+                    <div class="gateway-icon">🏭</div>
+                    <h2 style="color: var(--primary-mint); margin-bottom: 10px;">SUPPLIER PORTAL</h2>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">
+                        Strictly for waste suppliers: List factory scrap using AI Autofill, track sales earnings, verify GSTIN & view buyer demand.
+                    </p>
+                    <a href="login.html?role=supplier" class="btn btn-supplier btn-full" style="font-size: 16px; padding: 14px;">🚀 Supplier Login & Enter Portal</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            ♻️ <b style="color: var(--primary-mint);">ReLoop</b> | Circular Industry Platform &bull; Powered by AI
+        </footer>
+
+    </div>
+
+    <!-- WebGL / Constellation Background Engine Script -->
+    <script src="background.js"></script>
+    <!-- Dynamic Motion & Animation Engine -->
+    <script src="motion.js"></script>
+</body>
+</html>

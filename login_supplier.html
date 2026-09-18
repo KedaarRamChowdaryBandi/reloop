@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoop - Dedicated Supplier Login</title>
+    <meta name="description" content="Dedicated Supplier Login & Access Authentication Page.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh; justify-content: center; align-items: center; padding: 20px;">
+
+    <!-- Interactive User-Controlled 3D Constellation Mesh Background Canvas -->
+    <canvas id="reloop-dither-bg"></canvas>
+
+    <!-- SUPPLIER LOGIN CARD CONTAINER -->
+    <div class="reloop-card" style="width: 100%; max-width: 480px; padding: 40px; text-align: center; border-color: rgba(16, 185, 129, 0.5); box-shadow: 0 0 50px rgba(16, 185, 129, 0.4); backdrop-filter: blur(16px);">
+        
+        <a href="index.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <span style="font-size: 38px;">🏭</span>
+            <div style="font-family: var(--font-heading); font-size: 30px; font-weight: 800; color: #FFF;">Re<span style="color: var(--primary-mint);">Loop</span></div>
+        </a>
+
+        <div style="margin-bottom: 20px;">
+            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.6); font-size: 13px; padding: 6px 16px;">🔐 DEDICATED SUPPLIER PORTAL ACCESS</span>
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.5;">
+            Authenticating your account grants full access to <strong>Supplier Features ONLY</strong>: List Factory Waste, AI Description Generator, Inventory Manager, Buyer Demand Feed & GSTIN Vetting.
+        </p>
+
+        <!-- Login / Register Tab Switcher -->
+        <div style="display: flex; gap: 8px; margin-bottom: 24px; background: rgba(4, 9, 18, 0.6); padding: 4px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+            <button id="tab-login-btn" class="btn btn-supplier btn-sm" style="flex: 1;" onclick="showAuthTab('login')">Sign In</button>
+            <button id="tab-register-btn" class="btn btn-outline btn-sm" style="flex: 1; border: none;" onclick="showAuthTab('register')">Register New Supplier</button>
+        </div>
+
+        <!-- 1-Click Quick Demo Credentials -->
+        <button class="btn btn-outline btn-full" style="margin-bottom: 22px; border-color: #10B981; color: #10B981;" onclick="fillDemoSupplier()">
+            ⚡ Fill Demo Supplier Credentials (supplier@eco.com)
+        </button>
+
+        <!-- LOGIN FORM -->
+        <form id="supplier-login-form" onsubmit="handleSupplierLogin(event)">
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Company Email Address</label>
+                <input type="email" id="supplier-email" class="form-control" placeholder="supplier@eco.com" required>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Password</label>
+                <input type="password" id="supplier-password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-supplier btn-full" style="font-size: 16px; padding: 14px; margin-bottom: 16px;">
+                🚀 Login & Launch Supplier Portal
+            </button>
+        </form>
+
+        <!-- REGISTER FORM (Hidden by default) -->
+        <form id="supplier-register-form" style="display: none;" onsubmit="handleSupplierRegister(event)">
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Company / Factory Name</label>
+                <input type="text" id="reg-supplier-name" class="form-control" placeholder="e.g. TimberCraft Industries" required>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">GSTIN Registration Number</label>
+                <input type="text" id="reg-supplier-gst" class="form-control" placeholder="29AAACT1234F1Z5" required>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Company Email Address</label>
+                <input type="email" id="reg-supplier-email" class="form-control" placeholder="factory@supplier.com" required>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Password</label>
+                <input type="password" id="reg-supplier-password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-supplier btn-full" style="font-size: 16px; padding: 14px; margin-bottom: 16px;">
+                ✨ Create Account & Launch Supplier Portal
+            </button>
+        </form>
+
+        <div style="font-size: 13px; color: var(--text-dim); margin-top: 15px;">
+            Are you a manufacturing buyer? <a href="login_buyer.html" style="color: var(--primary-mint); text-decoration: none; font-weight: bold;">Go to Buyer Login 🛒</a>
+        </div>
+
+        <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+            <a href="index.html" style="color: var(--text-muted); font-size: 13px; text-decoration: none;">⬅️ Return to Main Explainer Hub</a>
+        </div>
+    </div>
+
+    <script src="background.js"></script>
+    <script src="motion.js"></script>
+    <script>
+        function showAuthTab(tab) {
+            const loginForm = document.getElementById('supplier-login-form');
+            const regForm = document.getElementById('supplier-register-form');
+            const loginBtn = document.getElementById('tab-login-btn');
+            const regBtn = document.getElementById('tab-register-btn');
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                regForm.style.display = 'none';
+                loginBtn.className = 'btn btn-supplier btn-sm';
+                regBtn.className = 'btn btn-outline btn-sm';
+                regBtn.style.border = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                regForm.style.display = 'block';
+                regBtn.className = 'btn btn-supplier btn-sm';
+                loginBtn.className = 'btn btn-outline btn-sm';
+                loginBtn.style.border = 'none';
+            }
+        }
+
+        function fillDemoSupplier() {
+            showAuthTab('login');
+            document.getElementById('supplier-email').value = 'supplier@eco.com';
+            document.getElementById('supplier-password').value = 'password123';
+        }
+
+        function handleSupplierLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('supplier-email').value.trim();
+            const pass = document.getElementById('supplier-password').value.trim();
+
+            const supplierUser = {
+                id: Date.now(),
+                name: email.split('@')[0].toUpperCase() + " (Supplier)",
+                email: email,
+                role: "supplier",
+                token: "supplier_session_" + Date.now()
+            };
+
+            localStorage.setItem('reloop_active_supplier', JSON.stringify(supplierUser));
+            alert('🎉 Supplier Login Successful! Launching Supplier Portal...');
+            window.location.href = 'supplier.html';
+        }
+
+        function handleSupplierRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-supplier-name').value.trim();
+            const email = document.getElementById('reg-supplier-email').value.trim();
+            const gst = document.getElementById('reg-supplier-gst').value.trim();
+
+            const supplierUser = {
+                id: Date.now(),
+                name: name + " (Supplier)",
+                email: email,
+                gst: gst,
+                role: "supplier",
+                token: "supplier_session_" + Date.now()
+            };
+
+            localStorage.setItem('reloop_active_supplier', JSON.stringify(supplierUser));
+            alert('🎉 Supplier Account Created & GST Registered! Launching Supplier Portal...');
+            window.location.href = 'supplier.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof initMotionEngine === 'function') initMotionEngine();
+        });
+    </script>
+</body>
+</html>

@@ -25,15 +25,15 @@ if status:
     else:
         badge = '<span class="badge-pending">⏳ Pending Review</span>'
         
-    trust_color = "#00E676" if status["trust_score"] >= 8.0 else "#ffc107" if status["trust_score"] >= 5.0 else "#ff5252"
+    trust_color = "#10B981" if status["trust_score"] >= 8.0 else "#FBBF24" if status["trust_score"] >= 5.0 else "#F43F5E"
     
     st.markdown(f"""
     <div class="reloop-card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <h3 style="margin:0;">Verification Profile</h3>
+            <h3 style="margin:0; color:#10B981;">Verification Profile</h3>
             <div>{badge}</div>
         </div>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; font-size:14px; color:#bbb;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; font-size:14px; color:#CBD5E1;">
             <div><strong>Company Name:</strong> {status['company_name']}</div>
             <div><strong>GST Registration:</strong> <code>{status['gst_number']}</code></div>
             <div><strong>Factory Address:</strong> {status['address']}</div>

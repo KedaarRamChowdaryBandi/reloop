@@ -26,73 +26,68 @@ order_count = len(orders)
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.markdown(f"""
-    <div class="reloop-card" style="text-align: center;">
-        <h4 style="color: #64748B; font-size: 14px; margin: 0;">Materials Purchased</h4>
-        <h2 style="color: #059669 !important; -webkit-text-fill-color: #059669 !important; margin: 10px 0;">{total_procured:,.1f} kg</h2>
-        <p style="color: #475569; font-size: 11px; margin: 0;">Procured waste byproducts</p>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="reloop-card" style="text-align: center;">
+<h4 style="color: #94A3B8; font-size: 14px; margin: 0;">Materials Purchased</h4>
+<h2 style="color: #00FFC0 !important; -webkit-text-fill-color: #00FFC0 !important; margin: 10px 0;">{total_procured:,.1f} kg</h2>
+<p style="color: #CBD5E1; font-size: 11px; margin: 0;">Procured waste byproducts</p>
+</div>
+""", unsafe_allow_html=True)
 
 with col2:
     st.markdown(f"""
-    <div class="reloop-card" style="text-align: center;">
-        <h4 style="color: #64748B; font-size: 14px; margin: 0;">Total Spent</h4>
-        <h2 style="color: #059669 !important; -webkit-text-fill-color: #059669 !important; margin: 10px 0;">₹{total_spent:,.2f}</h2>
-        <p style="color: #475569; font-size: 11px; margin: 0;">Circularity investments</p>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="reloop-card" style="text-align: center;">
+<h4 style="color: #94A3B8; font-size: 14px; margin: 0;">Total Spent</h4>
+<h2 style="color: #00FFC0 !important; -webkit-text-fill-color: #00FFC0 !important; margin: 10px 0;">₹{total_spent:,.2f}</h2>
+<p style="color: #CBD5E1; font-size: 11px; margin: 0;">Circularity investments</p>
+</div>
+""", unsafe_allow_html=True)
 
 with col3:
     st.markdown(f"""
-    <div class="reloop-card" style="text-align: center;">
-        <h4 style="color: #64748B; font-size: 14px; margin: 0;">Total CO₂ Saved</h4>
-        <h2 style="color: #059669 !important; -webkit-text-fill-color: #059669 !important; margin: 10px 0;">{total_co2:,.2f} t</h2>
-        <p style="color: #475569; font-size: 11px; margin: 0;">Carbon footprint reduction</p>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="reloop-card" style="text-align: center;">
+<h4 style="color: #94A3B8; font-size: 14px; margin: 0;">Total CO₂ Saved</h4>
+<h2 style="color: #00FFC0 !important; -webkit-text-fill-color: #00FFC0 !important; margin: 10px 0;">{total_co2:,.2f} t</h2>
+<p style="color: #CBD5E1; font-size: 11px; margin: 0;">Carbon footprint reduction</p>
+</div>
+""", unsafe_allow_html=True)
 
 with col4:
     st.markdown(f"""
-    <div class="reloop-card" style="text-align: center;">
-        <h4 style="color: #64748B; font-size: 14px; margin: 0;">Total Transactions</h4>
-        <h2 style="color: #059669 !important; -webkit-text-fill-color: #059669 !important; margin: 10px 0;">{order_count}</h2>
-        <p style="color: #475569; font-size: 11px; margin: 0;">Completed orders</p>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="reloop-card" style="text-align: center;">
+<h4 style="color: #94A3B8; font-size: 14px; margin: 0;">Total Transactions</h4>
+<h2 style="color: #00FFC0 !important; -webkit-text-fill-color: #00FFC0 !important; margin: 10px 0;">{order_count}</h2>
+<p style="color: #CBD5E1; font-size: 11px; margin: 0;">Completed orders</p>
+</div>
+""", unsafe_allow_html=True)
 
 st.divider()
 
 # Charts & Analytics
-st.subheader("📦 Procurement & Impact Analytics")
 if orders:
     df = pd.DataFrame(orders)
-    # Ensure dates are parsed
-    df["created_at"] = pd.to_datetime(df["created_at"])
-    df["Date"] = df["created_at"].dt.date
+    col_chart1, col_chart2 = st.columns(2)
     
-    c_col1, c_col2 = st.columns(2)
-    
-    with c_col1:
+    with col_chart1:
         st.markdown("##### Spending Timeline")
-        daily_spend = df.groupby("Date")["total_price"].sum().reset_index()
-        # Sort by date
-        daily_spend = daily_spend.sort_values("Date")
-        st.line_chart(daily_spend.set_index("Date"), y="total_price", color="#059669")
+        df['date'] = pd.to_datetime(df['created_at'])
+        spending_over_time = df.groupby(df['date'].dt.date)['total_price'].sum()
+        st.line_chart(spending_over_time)
         
-    with c_col2:
-        st.markdown("##### Material Procurement Breakdown")
-        mat_breakdown = df.groupby("material")["quantity"].sum().reset_index()
-        st.bar_chart(mat_breakdown.set_index("material"), y="quantity", color="#0D9488")
-else:
-    st.info("You haven't made any purchases yet. Head over to the Marketplace or AI Matcher to find waste materials!")
+    with col_chart2:
+        st.markdown("##### Material Types Purchased")
+        mat_counts = df['material_type'].value_counts()
+        st.bar_chart(mat_counts)
 
-# Quick Navigation Section
 st.markdown("---")
 st.markdown("### 🚀 Quick Actions")
-act_col1, act_col2 = st.columns(2)
+
+act_col1, act_col2, act_col3 = st.columns(3)
 with act_col1:
-    if st.button("🛒 Open Marketplace", use_container_width=True):
+    if st.button("🛒 Browse Marketplace", use_container_width=True):
         st.switch_page("pages/marketplace.py")
 with act_col2:
-    if st.button("🤖 Find Supplier with AI Matcher", use_container_width=True):
+    if st.button("🤖 Run AI Matcher", use_container_width=True):
         st.switch_page("pages/ai_matcher.py")
+with act_col3:
+    if st.button("⚖️ Price Comparison", use_container_width=True):
+        st.switch_page("pages/price_comparison.py")

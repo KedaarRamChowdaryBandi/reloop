@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoop - Dedicated Buyer Portal</title>
+    <meta name="description" content="Dedicated Buyer Sourcing Portal for Circular Manufacturing Materials.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 3D WebGL Motion Background Shader Canvas -->
+    <canvas id="reloop-dither-bg"></canvas>
+
+    <div class="app-container">
+
+        <!-- DEDICATED BUYER STICKY NAVBAR (STRICT BUYER ONLY) -->
+        <nav class="navbar">
+            <a href="index.html" class="nav-brand" title="Exit to Main Explainer Dashboard">
+                <span class="nav-brand-logo">🛒</span>
+                <div class="nav-brand-title">Re<span>Loop</span></div>
+                <span class="portal-badge-indicator" style="background: rgba(6, 182, 212, 0.2); color: #38BDF8; border-color: rgba(6, 182, 212, 0.4);">Buyer Portal</span>
+            </a>
+
+            <ul class="nav-links">
+                <li class="nav-item active"><a href="buyer.html" style="color:inherit; text-decoration:none;">🛒 Buyer Dashboard</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <div class="user-badge" id="buyer-user-badge">👤 Buyer Account</div>
+                <button class="btn btn-buyer btn-sm" id="buyer-auth-btn" onclick="handleBuyerSignOut()">🔓 Sign Out to Home</button>
+            </div>
+        </nav>
+
+        <!-- DEDICATED BUYER PORTAL CONTAINER -->
+        <section class="portal-container active">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <h1 style="color: var(--primary-mint);">🛒 Dedicated Buyer Portal</h1>
+                    <p style="color: var(--text-muted);">Procure verified secondary raw materials, calculate carbon savings, run AI matching queries, and manage orders.</p>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="localStorage.removeItem('reloop_active_buyer'); window.location.href='index.html';">🏠 Exit & Sign Out to Home</button>
+            </div>
+
+            <!-- Subtabs Navigation (Buyer Only Features) -->
+            <div class="subtab-bar">
+                <div class="subtab-item active" data-subtab="buyer-dash" onclick="switchBuyerSubtab('buyer-dash')">📊 Dashboard & Procurement Logs</div>
+                <div class="subtab-item" data-subtab="buyer-market" onclick="switchBuyerSubtab('buyer-market')">🛒 Marketplace</div>
+                <div class="subtab-item" data-subtab="buyer-matcher" onclick="switchBuyerSubtab('buyer-matcher')">🤖 AI Sourcing Matcher</div>
+                <div class="subtab-item" data-subtab="buyer-price" onclick="switchBuyerSubtab('buyer-price')">⚖️ Price Compare</div>
+                <div class="subtab-item" data-subtab="buyer-carbon" onclick="switchBuyerSubtab('buyer-carbon')">🌱 Carbon Impact</div>
+                <div class="subtab-item" data-subtab="buyer-verify" onclick="switchBuyerSubtab('buyer-verify')">✅ Verification Registry</div>
+                <div class="subtab-item" data-subtab="buyer-request" onclick="switchBuyerSubtab('buyer-request')">📢 Post Sourcing Request</div>
+            </div>
+
+            <!-- Subtab 1: Buyer Dashboard -->
+            <div id="subtab-buyer-dash" class="subtab-content active">
+                <div class="reloop-card" style="background: rgba(0, 255, 192, 0.08); margin-bottom: 25px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="color: var(--primary-mint); margin: 0;" id="buyer-welcome-name">Welcome, GreenTech Solutions (Buyer)</h3>
+                            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Viewing buyer-specific procurement history, spending metrics, and carbon savings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-4" style="margin-bottom: 30px;">
+                    <div class="metric-card">
+                        <div class="metric-label">Materials Procured</div>
+                        <div class="metric-val" id="b-stat-procured">200 kg</div>
+                        <div class="metric-sub">Secondary raw materials</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Total Investment</div>
+                        <div class="metric-val" id="b-stat-spent">₹1,700</div>
+                        <div class="metric-sub">Circularity spending</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">CO₂ Prevented</div>
+                        <div class="metric-val" id="b-stat-co2">0.08 t</div>
+                        <div class="metric-sub">Emissions diverted</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Completed Orders</div>
+                        <div class="metric-val" id="b-stat-orders">1</div>
+                        <div class="metric-sub">Successful deals</div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--text-main); margin-bottom: 15px;">📦 Procured Material Orders Log</h3>
+                <div id="buyer-orders-history-list"></div>
+            </div>
+
+            <!-- Subtab 2: Marketplace -->
+            <div id="subtab-buyer-market" class="subtab-content">
+                <div class="reloop-card" style="margin-bottom: 25px;">
+                    <div class="grid-4">
+                        <div class="form-group" style="margin: 0;">
+                            <label class="form-label">🔍 Search Keywords</label>
+                            <input type="text" id="market-search" class="form-control" placeholder="e.g. Copper, Cotton, Slag..." oninput="renderMarketplace()">
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label class="form-label">Material Category</label>
+                            <select id="market-category" class="form-control" onchange="renderMarketplace()">
+                                <option value="All">All Categories</option>
+                                <option value="Wood Waste">Wood Waste</option>
+                                <option value="Textiles">Textiles & Fiber</option>
+                                <option value="Plastics">Plastics & Polymers</option>
+                                <option value="Metals">Metals & Alloys</option>
+                                <option value="Paper Waste">Paper Waste</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label class="form-label">Max Price (₹/kg)</label>
+                            <input type="number" id="market-max-price" class="form-control" value="1000" oninput="renderMarketplace()">
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label class="form-label">Condition Quality</label>
+                            <select id="market-condition" class="form-control" onchange="renderMarketplace()">
+                                <option value="All">All Conditions</option>
+                                <option value="good">Good Quality</option>
+                                <option value="excellent">Excellent Grade</option>
+                                <option value="fair">Fair Industrial</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="marketplace-grid-container"></div>
+            </div>
+
+            <!-- Subtab 3: AI Matcher -->
+            <div id="subtab-buyer-matcher" class="subtab-content">
+                <div class="reloop-card" style="margin-bottom: 30px;">
+                    <h3 style="color: var(--primary-mint); margin-bottom: 15px;">🎯 Define Sourcing Requirements</h3>
+                    <div class="grid-3" style="margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Material Needed</label>
+                            <input type="text" id="match-req-material" class="form-control" value="Wood" placeholder="e.g. Copper, Cotton, Slag...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Required Quantity (kg)</label>
+                            <input type="number" id="match-req-qty" class="form-control" value="500">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Max Budget Price (₹/kg)</label>
+                            <input type="number" id="match-req-maxprice" class="form-control" value="250">
+                        </div>
+                    </div>
+
+                    <h4 style="color: var(--primary-mint); margin-bottom: 12px;">⚙️ Matching Optimization Weights</h4>
+                    <div class="grid-3" style="margin-bottom: 20px;">
+                        <div>
+                            <label class="form-label">Proximity / Distance Weight</label>
+                            <input type="range" id="weight-dist" min="0" max="1" step="0.1" value="0.3" style="width:100%;">
+                        </div>
+                        <div>
+                            <label class="form-label">Lowest Price Weight</label>
+                            <input type="range" id="weight-price" min="0" max="1" step="0.1" value="0.4" style="width:100%;">
+                        </div>
+                        <div>
+                            <label class="form-label">Supplier Trust Weight</label>
+                            <input type="range" id="weight-trust" min="0" max="1" step="0.1" value="0.3" style="width:100%;">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-buyer btn-full" onclick="runAIMatching()">🚀 Calculate AI Recommendations</button>
+                </div>
+
+                <div id="ai-award-cards-container"></div>
+                <div id="ai-matches-list-container"></div>
+            </div>
+
+            <!-- Subtab 4: Price Compare -->
+            <div id="subtab-buyer-price" class="subtab-content">
+                <div class="grid-4" style="margin-bottom: 25px;">
+                    <div class="metric-card">
+                        <div class="metric-label">Wood Scrap Index</div>
+                        <div class="metric-val">₹9.20/kg</div>
+                        <div class="metric-sub">Market Benchmark</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Cotton Waste Index</div>
+                        <div class="metric-val">₹15.50/kg</div>
+                        <div class="metric-sub">Market Benchmark</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">HDPE Plastic Index</div>
+                        <div class="metric-val">₹21.00/kg</div>
+                        <div class="metric-sub">Market Benchmark</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Aluminum Scrap Index</div>
+                        <div class="metric-val">₹32.00/kg</div>
+                        <div class="metric-sub">Market Benchmark</div>
+                    </div>
+                </div>
+                <div id="price-comparison-list"></div>
+            </div>
+
+            <!-- Subtab 5: Carbon Impact -->
+            <div id="subtab-buyer-carbon" class="subtab-content">
+                <div class="reloop-card" style="margin-bottom: 25px;">
+                    <h3 style="color: var(--primary-mint); margin-bottom: 15px;">🧮 Interactive Carbon Diversion Calculator</h3>
+                    <div class="grid-3" style="margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Material Type</label>
+                            <select id="calc-mat-type" class="form-control" onchange="calculateCarbonOffset()">
+                                <option value="Plastic Waste">Plastic / HDPE (2.16 kg CO₂/kg)</option>
+                                <option value="Metal Scrap">Metal / Aluminum (1.85 kg CO₂/kg)</option>
+                                <option value="Cotton Waste">Cotton / Textile (2.00 kg CO₂/kg)</option>
+                                <option value="Wood Waste">Wood Waste (0.44 kg CO₂/kg)</option>
+                                <option value="Paper Waste">Paper / Cardboard (1.20 kg CO₂/kg)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Material Weight (kg)</label>
+                            <input type="number" id="calc-weight" class="form-control" value="1000" oninput="calculateCarbonOffset()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Calculated CO₂ Prevented</label>
+                            <input type="text" id="calc-co2-result" class="form-control" value="2.16 tons CO₂" readonly style="color: var(--primary-mint); font-weight: bold;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-4">
+                    <div class="metric-card">
+                        <div class="metric-label">Seedlings Planted</div>
+                        <div class="metric-val" id="eq-trees">35.7</div>
+                        <div class="metric-sub">Trees grown for 10 years</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Cars Off Road</div>
+                        <div class="metric-val" id="eq-cars">0.47</div>
+                        <div class="metric-sub">Passenger vehicle annual miles</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Homes Powered</div>
+                        <div class="metric-val" id="eq-homes">0.26</div>
+                        <div class="metric-sub">Household annual electricity</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Landfill Diverted</div>
+                        <div class="metric-val" id="eq-landfill">1,000 kg</div>
+                        <div class="metric-sub">Solid waste prevented</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 6: Verification Registry -->
+            <div id="subtab-buyer-verify" class="subtab-content">
+                <div id="verification-registry-list"></div>
+            </div>
+
+            <!-- Subtab 7: Post Sourcing Request -->
+            <div id="subtab-buyer-request" class="subtab-content">
+                <div class="reloop-card">
+                    <h3 style="color: var(--primary-mint); margin-bottom: 15px;">📢 Post an Open Sourcing Request</h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Can't find an active listing matching your specs? Post a request so suppliers can view your sourcing demand in their feed!</p>
+                    
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label class="form-label">Material Category Needed</label>
+                            <select id="req-cat" class="form-control">
+                                <option value="Wood Waste">Wood Waste</option>
+                                <option value="Textiles">Cotton / Textile Waste</option>
+                                <option value="Plastics">Plastic / HDPE Waste</option>
+                                <option value="Metals">Metal Scrap</option>
+                                <option value="Paper Waste">Paper Waste</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Volume Needed (kg)</label>
+                            <input type="number" id="req-qty" class="form-control" value="500">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Max Budget Price (₹/kg)</label>
+                            <input type="number" id="req-maxprice" class="form-control" value="15">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-buyer" onclick="submitBuyerRequest()">📢 Publish Sourcing Request</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            🛒 <b style="color: var(--primary-mint);">ReLoop Dedicated Buyer Portal</b> &bull; Powered by AI
+        </footer>
+
+    </div>
+
+    <!-- FLOATING AI CHATBOT DRAWER -->
+    <div class="chatbot-trigger" onclick="toggleChatbot()" title="Open Buyer AI Assistant">💬</div>
+
+    <div class="chatbot-drawer" id="chatbot-drawer">
+        <div class="chatbot-header">
+            <div style="font-weight: 700; color: var(--primary-mint);">🤖 Buyer AI Sourcing Assistant</div>
+            <span style="cursor: pointer;" onclick="toggleChatbot()">&times;</span>
+        </div>
+        <div class="chatbot-messages" id="chat-messages-container">
+            <div class="chat-msg bot">Hello! I am your Buyer Sourcing Assistant. Ask me about active material prices, supplier trust scores, or circular recommendations!</div>
+        </div>
+        <div class="chatbot-input-row">
+            <input type="text" id="chat-user-input" class="form-control" placeholder="Ask AI assistant..." onkeypress="handleChatKeyPress(event)">
+            <button class="btn btn-buyer btn-sm" onclick="sendChatMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="background.js"></script>
+    <script src="motion.js"></script>
+    <script src="buyer.js"></script>
+</body>
+</html>

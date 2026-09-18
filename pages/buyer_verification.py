@@ -27,19 +27,19 @@ else:
         else:
             status_badge = '<span class="badge-pending">⏳ Under Review</span>'
             
-        trust_color = "#ffc107"
+        trust_color = "#FBBF24"
         if v["trust_score"] >= 8.0:
-            trust_color = "#00E676"
+            trust_color = "#10B981"
         elif v["trust_score"] < 5.0:
-            trust_color = "#ff5252"
+            trust_color = "#F43F5E"
             
         st.markdown(f"""
         <div class="reloop-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h4 style="margin: 0; font-size: 18px; color: white;">🏭 {v['company_name']}</h4>
+                <h4 style="margin: 0; font-size: 18px; color: #F8FAFC;">🏭 {v['company_name']}</h4>
                 <div>{status_badge}</div>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 14px; color: #bbb; margin-top: 10px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 14px; color: #CBD5E1; margin-top: 10px;">
                 <div><strong>GST registration:</strong> <code>{v['gst_number']}</code></div>
                 <div><strong>Registered Address:</strong> {v['address']}</div>
                 <div><strong>Supplier Email:</strong> {v['supplier_email']}</div>
@@ -48,7 +48,7 @@ else:
                     <span style="color: {trust_color}; font-weight: bold; font-size: 16px;">{v['trust_score']:.1f} / 10.0</span>
                 </div>
             </div>
-            <div style="background: rgba(0, 230, 118, 0.05); padding: 10px; border-radius: 8px; margin-top: 15px; font-size: 13px; color: #ccc; border: 1px solid rgba(0, 230, 118, 0.1);">
+            <div style="background: rgba(16, 185, 129, 0.08); padding: 12px; border-radius: 10px; margin-top: 15px; font-size: 13px; color: #CBD5E1; border: 1px solid rgba(16, 185, 129, 0.2);">
                 💡 <strong>Trust Score Breakdown:</strong> Score calculated by evaluating GST format correctness, geographic proximity to logistics networks, business email verification, and listing accuracy logs.
             </div>
         </div>

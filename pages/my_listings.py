@@ -32,11 +32,11 @@ else:
                     st.markdown(f"""
                     <div class="reloop-card">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <h3 style="margin:0; color:#00E676;">♻️ {l['material'].title()}</h3>
-                            <span class="badge-verified" style="background-color:#123524; color:#00E676; border-color:#00E676;">Active</span>
+                            <h3 style="margin:0; color:#10B981;">♻️ {l['material'].title()}</h3>
+                            <span class="badge-verified">Active</span>
                         </div>
-                        <p style="color:#ccc; font-style:italic; font-size:13px; margin: 10px 0;">{l['description'] or 'No description provided.'}</p>
-                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; font-size:13px; color:#aaa;">
+                        <p style="color:#CBD5E1; font-style:italic; font-size:13px; margin: 10px 0;">{l['description'] or 'No description provided.'}</p>
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; font-size:13px; color:#CBD5E1;">
                             <div><strong>Quantity:</strong> {l['quantity']} {l['unit']}</div>
                             <div><strong>Price:</strong> ₹{l['price_per_kg']:.2f} / kg</div>
                             <div><strong>Source:</strong> 📍 {l['location']}</div>
@@ -64,13 +64,13 @@ else:
         else:
             for l in sold_list:
                 st.markdown(f"""
-                <div class="reloop-card" style="border-color: rgba(255,82,82,0.3);">
+                <div class="reloop-card" style="border-color: rgba(244,63,94,0.4);">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <h3 style="margin:0; color:#ff5252;">♻️ {l['material'].title()}</h3>
+                        <h3 style="margin:0; color:#FB7185;">♻️ {l['material'].title()}</h3>
                         <span class="badge-sold">Sold</span>
                     </div>
-                    <p style="color:#aaa; font-style:italic; font-size:13px;">{l['description'] or 'No description provided.'}</p>
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; font-size:13px; color:#999;">
+                    <p style="color:#CBD5E1; font-style:italic; font-size:13px;">{l['description'] or 'No description provided.'}</p>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; font-size:13px; color:#CBD5E1;">
                         <div><strong>Quantity Sold:</strong> {l['quantity']} {l['unit']}</div>
                         <div><strong>Price:</strong> ₹{l['price_per_kg']:.2f} / kg</div>
                         <div><strong>Location:</strong> 📍 {l['location']}</div>

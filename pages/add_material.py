@@ -4,6 +4,9 @@ from db.db_utils import add_listing
 from engine.material_analyzer import analyze_listing
 from engine.price_engine import get_price
 from engine.carbon_engine import carbon_saved
+from theme import load_css
+
+load_css()
 
 # Ensure user is logged in
 if not st.session_state.user or st.session_state.user["role"] != "supplier":

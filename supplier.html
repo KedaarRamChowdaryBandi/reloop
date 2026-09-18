@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoop - Dedicated Supplier Portal</title>
+    <meta name="description" content="Dedicated Supplier Portal for Industrial Waste Generators and Manufacturers.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 3D WebGL Motion Background Shader Canvas -->
+    <canvas id="reloop-dither-bg"></canvas>
+
+    <div class="app-container">
+
+        <!-- DEDICATED SUPPLIER STICKY NAVBAR (STRICT SUPPLIER ONLY) -->
+        <nav class="navbar">
+            <a href="index.html" class="nav-brand" title="Exit to Main Explainer Dashboard">
+                <span class="nav-brand-logo">🏭</span>
+                <div class="nav-brand-title">Re<span>Loop</span></div>
+                <span class="portal-badge-indicator" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border-color: rgba(16, 185, 129, 0.4);">Supplier Portal</span>
+            </a>
+
+            <ul class="nav-links">
+                <li class="nav-item active"><a href="supplier.html" style="color:inherit; text-decoration:none;">🏭 Supplier Control Center</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <div class="user-badge" id="supplier-user-badge">👤 Supplier Account</div>
+                <button class="btn btn-supplier btn-sm" id="supplier-auth-btn" onclick="handleSupplierSignOut()">🔓 Sign Out to Home</button>
+            </div>
+        </nav>
+
+        <!-- DEDICATED SUPPLIER PORTAL CONTAINER -->
+        <section class="portal-container active">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <h1 style="color: var(--primary-mint);">🏭 Dedicated Supplier Portal</h1>
+                    <p style="color: var(--text-muted);">List factory waste materials, verify company GSTIN credentials, track sales analytics, and respond to buyer demand.</p>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="localStorage.removeItem('reloop_active_supplier'); window.location.href='index.html';">🏠 Exit & Sign Out to Home</button>
+            </div>
+
+            <!-- Subtabs Navigation (Supplier Only Features) -->
+            <div class="subtab-bar">
+                <div class="subtab-item active" data-subtab="supplier-dash" onclick="switchSupplierSubtab('supplier-dash')">📊 Supplier Control Center</div>
+                <div class="subtab-item" data-subtab="supplier-add" onclick="switchSupplierSubtab('supplier-add')">➕ Add New Material (AI Autofill)</div>
+                <div class="subtab-item" data-subtab="supplier-inventory" onclick="switchSupplierSubtab('supplier-inventory')">📋 My Listings</div>
+                <div class="subtab-item" data-subtab="supplier-requests" onclick="switchSupplierSubtab('supplier-requests')">💬 Buyer Demand Requests</div>
+                <div class="subtab-item" data-subtab="supplier-gst" onclick="switchSupplierSubtab('supplier-gst')">📝 Verify Business (GSTIN)</div>
+            </div>
+
+            <!-- Subtab 1: Supplier Dashboard -->
+            <div id="subtab-supplier-dash" class="subtab-content active">
+                <div class="reloop-card" style="background: rgba(16, 185, 129, 0.08); margin-bottom: 25px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="color: var(--primary-mint); margin: 0;" id="supplier-welcome-name">Welcome, TimberCraft Industries (Supplier)</h3>
+                            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Viewing supplier-specific inventory statistics, total earnings, and CO₂ diversion metrics.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-4" style="margin-bottom: 30px;">
+                    <div class="metric-card">
+                        <div class="metric-label">Materials Listed</div>
+                        <div class="metric-val" id="s-stat-listed">3</div>
+                        <div class="metric-sub">Active waste lots</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Total Sold</div>
+                        <div class="metric-val" id="s-stat-sold">1</div>
+                        <div class="metric-sub">Completed deals</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Total Earnings</div>
+                        <div class="metric-val" id="s-stat-earnings">₹1,700</div>
+                        <div class="metric-sub">Revenue generated</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">CO₂ Diverted</div>
+                        <div class="metric-val" id="s-stat-co2">1.52 t</div>
+                        <div class="metric-sub">Offset savings</div>
+                    </div>
+                </div>
+
+                <div id="supplier-dash-listings-summary"></div>
+            </div>
+
+            <!-- Subtab 2: Add New Material -->
+            <div id="subtab-supplier-add" class="subtab-content">
+                <div class="reloop-card">
+                    <h3 style="color: var(--primary-mint); margin-bottom: 15px;">➕ Post New Secondary Raw Material</h3>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label class="form-label">Material Name</label>
+                            <input type="text" id="add-mat-name" class="form-control" placeholder="e.g. Copper Scrap, Pine Offcuts...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select id="add-mat-cat" class="form-control">
+                                <option value="Wood Waste">Wood Waste</option>
+                                <option value="Textiles">Textiles & Fiber</option>
+                                <option value="Plastics">Plastics & Polymers</option>
+                                <option value="Metals">Metals & Alloys</option>
+                                <option value="Paper Waste">Paper Waste</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Quantity (kg)</label>
+                            <input type="number" id="add-mat-qty" class="form-control" value="500">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Price per kg (₹)</label>
+                            <input type="number" id="add-mat-price" class="form-control" value="12.5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input type="text" id="add-mat-loc" class="form-control" value="Bengaluru">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Condition Quality</label>
+                            <select id="add-mat-cond" class="form-control">
+                                <option value="good">Good Quality</option>
+                                <option value="excellent">Excellent Grade</option>
+                                <option value="fair">Fair Industrial</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description (Click 🪄 AI Smart Autofill to generate)</label>
+                        <textarea id="add-mat-desc" class="form-control" placeholder="Description of material condition and origin..."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-outline" onclick="autofillAIDescription()">🪄 AI Smart Autofill</button>
+                        <button class="btn btn-supplier" onclick="submitNewMaterial()">🚀 Publish Listing</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 3: Inventory List -->
+            <div id="subtab-supplier-inventory" class="subtab-content">
+                <div id="supplier-inventory-list"></div>
+            </div>
+
+            <!-- Subtab 4: Buyer Demand Requests -->
+            <div id="subtab-supplier-requests" class="subtab-content">
+                <div id="supplier-buyer-requests-list"></div>
+            </div>
+
+            <!-- Subtab 5: GST Verification -->
+            <div id="subtab-supplier-gst" class="subtab-content">
+                <div class="reloop-card">
+                    <h3 style="color: var(--primary-mint); margin-bottom: 15px;">📝 Verify Your Business Credentials</h3>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Company / Factory Name</label>
+                            <input type="text" id="gst-company" class="form-control" value="TimberCraft Industries">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">GSTIN Registration Number</label>
+                            <input type="text" id="gst-num" class="form-control" value="29AAACT1234F1Z5">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Factory Address</label>
+                        <textarea id="gst-address" class="form-control">Plot 12, Peenya Industrial Area, Bengaluru, Karnataka</textarea>
+                    </div>
+
+                    <button class="btn btn-supplier" onclick="submitGSTVerification()">Submit GSTIN Credentials for Verification</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            🏭 <b style="color: var(--primary-mint);">ReLoop Dedicated Supplier Portal</b> &bull; Powered by AI
+        </footer>
+
+    </div>
+
+    <!-- FLOATING AI CHATBOT DRAWER -->
+    <div class="chatbot-trigger" onclick="toggleChatbot()" title="Open Supplier AI Assistant">💬</div>
+
+    <div class="chatbot-drawer" id="chatbot-drawer">
+        <div class="chatbot-header">
+            <div style="font-weight: 700; color: var(--primary-mint);">🤖 Supplier AI Assistant</div>
+            <span style="cursor: pointer;" onclick="toggleChatbot()">&times;</span>
+        </div>
+        <div class="chatbot-messages" id="chat-messages-container">
+            <div class="chat-msg bot">Hello! I am your Supplier Assistant. Ask me how to generate material descriptions, verify GSTIN, or analyze sales metrics!</div>
+        </div>
+        <div class="chatbot-input-row">
+            <input type="text" id="chat-user-input" class="form-control" placeholder="Ask AI assistant..." onkeypress="handleChatKeyPress(event)">
+            <button class="btn btn-supplier btn-sm" onclick="sendChatMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="background.js"></script>
+    <script src="motion.js"></script>
+    <script src="supplier.js"></script>
+</body>
+</html>

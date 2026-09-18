@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoop - Dedicated Buyer Login</title>
+    <meta name="description" content="Dedicated Buyer Login & Access Authentication Page.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh; justify-content: center; align-items: center; padding: 20px;">
+
+    <!-- Interactive User-Controlled 3D Constellation Mesh Background Canvas -->
+    <canvas id="reloop-dither-bg"></canvas>
+
+    <!-- BUYER LOGIN CARD CONTAINER -->
+    <div class="reloop-card" style="width: 100%; max-width: 480px; padding: 40px; text-align: center; border-color: rgba(6, 182, 212, 0.5); box-shadow: 0 0 50px rgba(6, 182, 212, 0.4); backdrop-filter: blur(16px);">
+        
+        <a href="index.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <span style="font-size: 38px;">🛒</span>
+            <div style="font-family: var(--font-heading); font-size: 30px; font-weight: 800; color: #FFF;">Re<span style="color: var(--primary-mint);">Loop</span></div>
+        </a>
+
+        <div style="margin-bottom: 20px;">
+            <span class="badge" style="background: rgba(6, 182, 212, 0.2); color: #38BDF8; border: 1px solid rgba(6, 182, 212, 0.6); font-size: 13px; padding: 6px 16px;">🔐 DEDICATED BUYER PORTAL ACCESS</span>
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.5;">
+            Authenticating your account grants full access to <strong>Buyer Features ONLY</strong>: Industrial Marketplace, AI Sourcing Matcher, Price Intelligence & Carbon Offset Accounting.
+        </p>
+
+        <!-- Login / Register Tab Switcher -->
+        <div style="display: flex; gap: 8px; margin-bottom: 24px; background: rgba(4, 9, 18, 0.6); padding: 4px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+            <button id="tab-login-btn" class="btn btn-buyer btn-sm" style="flex: 1;" onclick="showAuthTab('login')">Sign In</button>
+            <button id="tab-register-btn" class="btn btn-outline btn-sm" style="flex: 1; border: none;" onclick="showAuthTab('register')">Register New Buyer</button>
+        </div>
+
+        <!-- 1-Click Quick Demo Credentials -->
+        <button class="btn btn-outline btn-full" style="margin-bottom: 22px; border-color: #38BDF8; color: #38BDF8;" onclick="fillDemoBuyer()">
+            ⚡ Fill Demo Buyer Credentials (buyer@eco.com)
+        </button>
+
+        <!-- LOGIN FORM -->
+        <form id="buyer-login-form" onsubmit="handleBuyerLogin(event)">
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Buyer Email Address</label>
+                <input type="email" id="buyer-email" class="form-control" placeholder="buyer@eco.com" required>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Password</label>
+                <input type="password" id="buyer-password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-buyer btn-full" style="font-size: 16px; padding: 14px; margin-bottom: 16px;">
+                🚀 Login & Launch Buyer Portal
+            </button>
+        </form>
+
+        <!-- REGISTER FORM (Hidden by default) -->
+        <form id="buyer-register-form" style="display: none;" onsubmit="handleBuyerRegister(event)">
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Company / Buyer Name</label>
+                <input type="text" id="reg-buyer-name" class="form-control" placeholder="e.g. GreenTech Industries" required>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Buyer Email Address</label>
+                <input type="email" id="reg-buyer-email" class="form-control" placeholder="company@buyer.com" required>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label class="form-label">Password</label>
+                <input type="password" id="reg-buyer-password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-buyer btn-full" style="font-size: 16px; padding: 14px; margin-bottom: 16px;">
+                ✨ Create Account & Launch Buyer Portal
+            </button>
+        </form>
+
+        <div style="font-size: 13px; color: var(--text-dim); margin-top: 15px;">
+            Are you a waste supplier? <a href="login_supplier.html" style="color: var(--primary-mint); text-decoration: none; font-weight: bold;">Go to Supplier Login 🏭</a>
+        </div>
+
+        <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+            <a href="index.html" style="color: var(--text-muted); font-size: 13px; text-decoration: none;">⬅️ Return to Main Explainer Hub</a>
+        </div>
+    </div>
+
+    <script src="background.js"></script>
+    <script src="motion.js"></script>
+    <script>
+        function showAuthTab(tab) {
+            const loginForm = document.getElementById('buyer-login-form');
+            const regForm = document.getElementById('buyer-register-form');
+            const loginBtn = document.getElementById('tab-login-btn');
+            const regBtn = document.getElementById('tab-register-btn');
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                regForm.style.display = 'none';
+                loginBtn.className = 'btn btn-buyer btn-sm';
+                regBtn.className = 'btn btn-outline btn-sm';
+                regBtn.style.border = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                regForm.style.display = 'block';
+                regBtn.className = 'btn btn-buyer btn-sm';
+                loginBtn.className = 'btn btn-outline btn-sm';
+                loginBtn.style.border = 'none';
+            }
+        }
+
+        function fillDemoBuyer() {
+            showAuthTab('login');
+            document.getElementById('buyer-email').value = 'buyer@eco.com';
+            document.getElementById('buyer-password').value = 'password123';
+        }
+
+        function handleBuyerLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('buyer-email').value.trim();
+            const pass = document.getElementById('buyer-password').value.trim();
+
+            const buyerUser = {
+                id: Date.now(),
+                name: email.split('@')[0].toUpperCase() + " (Buyer)",
+                email: email,
+                role: "buyer",
+                token: "buyer_session_" + Date.now()
+            };
+
+            localStorage.setItem('reloop_active_buyer', JSON.stringify(buyerUser));
+            alert('🎉 Buyer Login Successful! Launching Buyer Portal...');
+            window.location.href = 'buyer.html';
+        }
+
+        function handleBuyerRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-buyer-name').value.trim();
+            const email = document.getElementById('reg-buyer-email').value.trim();
+            const pass = document.getElementById('reg-buyer-password').value.trim();
+
+            const buyerUser = {
+                id: Date.now(),
+                name: name + " (Buyer)",
+                email: email,
+                role: "buyer",
+                token: "buyer_session_" + Date.now()
+            };
+
+            localStorage.setItem('reloop_active_buyer', JSON.stringify(buyerUser));
+            alert('🎉 Buyer Account Created! Launching Buyer Portal...');
+            window.location.href = 'buyer.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof initMotionEngine === 'function') initMotionEngine();
+        });
+    </script>
+</body>
+</html>

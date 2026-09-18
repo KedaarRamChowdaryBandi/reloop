@@ -64,10 +64,10 @@ if st.button("🔬 Analyze Material Lot", use_container_width=True):
                     st.markdown("### 📋 Characterization Profile")
                     st.markdown(f"""
                     <div class="reloop-card">
-                        <h4 style="color:#00E676; margin:0 0 10px 0;">🔍 Extract Summary</h4>
-                        <p style="color:white; font-style:italic;">"{summary}"</p>
+                        <h4 style="color:#10B981; margin:0 0 10px 0;">🔍 Extract Summary</h4>
+                        <p style="color:#F8FAFC; font-style:italic;">"{summary}"</p>
                         <hr style="border-color:rgba(255,255,255,0.1)">
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px; color:#bbb;">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px; color:#CBD5E1;">
                             <div><strong>Extracted Material:</strong> {m_type.upper()}</div>
                             <div><strong>Extracted Quantity:</strong> {qty} {unit}</div>
                             <div><strong>Extracted Condition:</strong> {cond.upper()}</div>
@@ -81,13 +81,13 @@ if st.button("🔬 Analyze Material Lot", use_container_width=True):
                     <div class="reloop-card">
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; text-align:center;">
                             <div>
-                                <h4 style="color:#888; font-size:13px; margin:0;">Circularity Rating</h4>
-                                <h1 style="color:#00E676; margin:10px 0;">{circ_score} <span style="font-size:16px;">/ 100</span></h1>
+                                <h4 style="color:#94A3B8; font-size:13px; margin:0;">Circularity Rating</h4>
+                                <h1 style="color:#10B981 !important; -webkit-text-fill-color:#10B981 !important; margin:10px 0;">{circ_score} <span style="font-size:16px;">/ 100</span></h1>
                             </div>
                             <div>
-                                <h4 style="color:#888; font-size:13px; margin:0;">Buyer Demand Level</h4>
-                                <h1 style="color:#29b6f6; margin:10px 0;">{demand['level']}</h1>
-                                <p style="color:#888; font-size:11px; margin:0;">{demand['interested_buyers']} buyers in region</p>
+                                <h4 style="color:#94A3B8; font-size:13px; margin:0;">Buyer Demand Level</h4>
+                                <h1 style="color:#38BDF8 !important; -webkit-text-fill-color:#38BDF8 !important; margin:10px 0;">{demand['level']}</h1>
+                                <p style="color:#CBD5E1; font-size:11px; margin:0;">{demand['interested_buyers']} buyers in region</p>
                             </div>
                         </div>
                     </div>
@@ -97,19 +97,19 @@ if st.button("🔬 Analyze Material Lot", use_container_width=True):
                     st.markdown("### 💰 Suggested Pricing")
                     st.markdown(f"""
                     <div class="reloop-card" style="text-align: center;">
-                        <h4 style="color:#888; font-size:13px;">Unit Reference Price</h4>
-                        <h2 style="color:white; margin:10px 0;">₹{suggested_unit_price:.2f} / kg</h2>
-                        <h4 style="color:#888; font-size:13px; margin-top:20px;">Estimated Total Value</h4>
-                        <h1 style="color:#00E676; margin:10px 0;">₹{estimated_value:,.2f}</h1>
+                        <h4 style="color:#94A3B8; font-size:13px;">Unit Reference Price</h4>
+                        <h2 style="color:#F8FAFC !important; -webkit-text-fill-color:#F8FAFC !important; margin:10px 0;">₹{suggested_unit_price:.2f} / kg</h2>
+                        <h4 style="color:#94A3B8; font-size:13px; margin-top:20px;">Estimated Total Value</h4>
+                        <h1 style="color:#10B981 !important; -webkit-text-fill-color:#10B981 !important; margin:10px 0;">₹{estimated_value:,.2f}</h1>
                     </div>
                     """, unsafe_allow_html=True)
                     
                     st.markdown("### 🌱 Carbon Offset")
                     st.markdown(f"""
-                    <div class="reloop-card" style="text-align: center; border-color:#00E676;">
-                        <h4 style="color:#888; font-size:13px;">CO₂ Diversion Potential</h4>
-                        <h1 style="color:#00E676; margin:10px 0;">{co2_offset:.3f} t</h1>
-                        <p style="color:#aaa; font-size:11px;">Offset achieved by keeping this material lot out of landfills.</p>
+                    <div class="reloop-card" style="text-align: center; border-color:#10B981;">
+                        <h4 style="color:#94A3B8; font-size:13px;">CO₂ Diversion Potential</h4>
+                        <h1 style="color:#10B981 !important; -webkit-text-fill-color:#10B981 !important; margin:10px 0;">{co2_offset:.3f} t</h1>
+                        <p style="color:#CBD5E1; font-size:11px;">Offset achieved by keeping this material lot out of landfills.</p>
                     </div>
                     """, unsafe_allow_html=True)
                     

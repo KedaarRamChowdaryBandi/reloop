@@ -26,8 +26,8 @@ with tab_orders:
             with col_info:
                 st.markdown(f"""
                 <div class="reloop-card">
-                    <h4 style="margin:0; color:#00E676;">♻ {o['material'].title()} Lot</h4>
-                    <div style="margin-top:10px; font-size:13px; color:#bbb; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <h4 style="margin:0; color:#10B981;">♻️ {o['material'].title()} Lot</h4>
+                    <div style="margin-top:10px; font-size:13px; color:#CBD5E1; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                         <div><strong>Buyer Org:</strong> {o['buyer_name']}</div>
                         <div><strong>Quantity Ordered:</strong> {o['quantity']:.1f} kg</div>
                         <div><strong>Total Value:</strong> ₹{o['total_price']:.2f}</div>
@@ -70,10 +70,10 @@ with tab_sourcing:
             st.markdown(f"""
             <div class="reloop-card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h4 style="margin:0; color:#29b6f6;"> Sourcing: {r['material_type'].title()}</h4>
-                    <span class="badge-verified" style="background-color:rgba(41,182,246,0.1); color:#29b6f6; border-color:#29b6f6;">Open Request</span>
+                    <h4 style="margin:0; color:#38BDF8;">📢 Sourcing: {r['material_type'].title()}</h4>
+                    <span class="badge-info">Open Request</span>
                 </div>
-                <div style="margin-top:10px; font-size:13px; color:#bbb; display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">
+                <div style="margin-top:10px; font-size:13px; color:#CBD5E1; display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">
                     <div><strong>Buyer:</strong> {r['buyer_name']}</div>
                     <div><strong>Target Volume:</strong> {r['quantity']:.1f} kg</div>
                     <div><strong>Max Budget:</strong> ₹{r['max_price']:.2f} / kg</div>
